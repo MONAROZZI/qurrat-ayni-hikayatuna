@@ -1,10 +1,10 @@
-/* Qurrat Ayni 3.1 — precise topic selection, open-first answers, questionnaire. */
+/* Qurrat Ayni 3.2 — precise topic selection, open-first answers, questionnaire. */
 (()=>{
 const el=id=>document.getElementById(id);
 const groups={
- date:['🍝 أسئلة اللقاء','🎲 تحديات اللقاء','🍝 موعد وجهاً لوجه','🎨 ألعاب خفيفة وتحديات','💗 أسئلة بتهمّه هو','💗 أسئلة من جهته'],
+ date:['🍝 أسئلة اللقاء','🎲 تحديات اللقاء','🌱 مخاوف وتوقعات متبادلة','🫶 تجديد المودة والرحمة','💗 أسئلة من جهته'],
  distance:['📱 تواصل عن بُعد','🗓️ خطط المسافة','📱 بعد الرجعة لفرنسا','👨‍👩‍👧 الأهل والتنقل'],
- real:['🎭 مواقف وحدود','👩‍💻 البرمجة والفن','🧕 الحدود والاختيارات','🌙 قوامة وشراكة','🌙 مسؤوليات وشراكة','🎨 الفن والعمل والروتين','✈️ سفر وشهر عسل','🎯 مواقف وقرارات مصيرية','💶 وفرة وكرم','💶 المصروف والكرم'],
+ real:['🎤 أسئلة منى بلا فلتر','🌸 الحياء والهوية','👶 تربية الأطفال','⚖️ التوازن والأدوار','🌧️ الزعل والغيرة والنكد','🌱 مخاوف وتوقعات متبادلة','🫶 تجديد المودة والرحمة','🎭 مواقف وحدود','👩‍💻 البرمجة والفن','🧕 الحدود والاختيارات','🌙 قوامة وشراكة','🌙 مسؤوليات وشراكة','🎨 الفن والعمل والروتين','✈️ سفر وشهر عسل','🎯 مواقف وقرارات مصيرية','💶 وفرة وكرم','💶 المصروف والكرم'],
  essentials:['🛋️ رفاهيات ولا أساسيات','🏠 الأساسيات والرفاهيات']
 };
 const financial=['💶 وفرة وكرم','💶 المصروف والكرم','🛋️ رفاهيات ولا أساسيات','🏠 الأساسيات والرفاهيات','✈️ سفر وشهر عسل'];
@@ -18,7 +18,7 @@ document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{activity=b.da
 el('v3subtopic').onchange=v=>{subtopic=el('v3subtopic').value;position=0;drawActivity()};
 el('v3next').onclick=()=>{position++;drawActivity()};el('v3shuffle').onclick=()=>{position=Math.floor(Math.random()*pool().length);drawActivity()};el('v31showChoices').onclick=()=>{el('v3choices').hidden=false;el('v31showChoices').hidden=true};
 // Financial topics are intentionally placed at the end of the compatibility questionnaire.
-const domains=['💗 أسئلة من جهته','📱 تواصل عن بُعد','🗓️ خطط المسافة','👩‍💻 البرمجة والفن','🎭 مواقف وحدود','🌙 مسؤوليات وشراكة','💗 أسئلة بتهمّه هو','🎯 مواقف وقرارات مصيرية','👨‍👩‍👧 الأهل والتنقل','🧕 الحدود والاختيارات','🌙 قوامة وشراكة','🎨 الفن والعمل والروتين','📱 بعد الرجعة لفرنسا','💶 وفرة وكرم','🛋️ رفاهيات ولا أساسيات','💶 المصروف والكرم','✈️ سفر وشهر عسل'];
+const domains=['🌸 الحياء والهوية','👶 تربية الأطفال','🫶 تجديد المودة والرحمة','⚖️ التوازن والأدوار','🌧️ الزعل والغيرة والنكد','🎤 أسئلة منى بلا فلتر','🌱 مخاوف وتوقعات متبادلة','💗 أسئلة من جهته','📱 تواصل عن بُعد','🗓️ خطط المسافة','👩‍💻 البرمجة والفن','🎭 مواقف وحدود','🌙 مسؤوليات وشراكة','💗 أسئلة بتهمّه هو','🎯 مواقف وقرارات مصيرية','👨‍👩‍👧 الأهل والتنقل','🧕 الحدود والاختيارات','🌙 قوامة وشراكة','🎨 الفن والعمل والروتين','📱 بعد الرجعة لفرنسا','💶 وفرة وكرم','🛋️ رفاهيات ولا أساسيات','💶 المصروف والكرم','✈️ سفر وشهر عسل'];
 const formItems=domains.flatMap(cat=>v3Questions.filter(q=>q.category===cat&&parts(q).options.length>=3).slice(0,2));
 function drawForm(){const root=el('v3form');root.replaceChildren();formItems.forEach((q,i)=>{const p=parts(q),wrap=document.createElement('div');wrap.className='v3formitem';const tag=document.createElement('span');tag.className='v3pill';tag.textContent=q.category;const label=document.createElement('strong');label.textContent=(i+1)+'. '+p.text;const select=document.createElement('select');select.setAttribute('aria-label',p.text);const blank=document.createElement('option');blank.value='';blank.textContent='اختار/ي جوابك…';select.append(blank);p.options.forEach((option,j)=>{const o=document.createElement('option');o.value=String(j);o.textContent=option;select.append(o)});select.value=own[person][q.id]??'';select.onchange=()=>{if(select.value==='')delete own[person][q.id];else own[person][q.id]=select.value};wrap.append(tag,label,select);root.append(wrap)});el('personA').classList.toggle('selected',person==='A');el('personB').classList.toggle('selected',person==='B')}
 function switchPerson(p){person=p;drawForm();el('v3formStatus').textContent=p==='A'?'عبّي إجاباتك لحالك، وما تطّلع على إجابات الطرف الثاني.':'إذا بنفس الجهاز، سلّميه الجهاز ليعبّي لحاله. إذا عن بُعد، كل واحد يستخدم «إجاباتي أنا».'}
